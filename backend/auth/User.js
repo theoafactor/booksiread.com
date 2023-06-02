@@ -1,4 +1,6 @@
 const mongodb = require("mongodb");
+const bcrypt = require("bcrypt");
+
 require("dotenv").config(); //for reading .env files
 const mongo_client = new mongodb.MongoClient(process.env.DB_URL);
 
@@ -11,7 +13,7 @@ User = (function(){
      */
     const checkUserExistsByUsername = async (username) => {
 
-        const check_user = await mongo_client.db(process.DB_NAME).collection("users").findOne({"username": username})
+        const check_user = await mongo_client.db(process.env.DB_NAME).collection("users").findOne({"username": username})
 
         if(check_user){
                 //done
@@ -32,14 +34,40 @@ User = (function(){
     }
 
 
+    const checkUserExistsByEmail = async (email) => {
+        const check_user_email = await mongo_client.db(process.env.DB_NAME).collection("users").findOne({"email": email });
+
+        if(check_user_email){
+            return {
+                message: "user email exists already",
+                data: check_user_email,
+                code: "success"
+            }
+        }
+
+        return {
+            message: "invalid email",
+            data: null,
+            code: "error"
+        }
+
+
+
+    }
+
+
     /**
      * Creates a new account
      */
-    const createNewAccount = (user) => {
+    const createNewAccount = async (user) => {
         const {firstname, lastname, username, email, password } = user
 
+
+        //hash the password
+        const hashed_password = await bcrypt.hash(password, 10);
+
         const create_account = mongo_client.db(process.DB_NAME).collection("users").insertOne({
-            firstname, lastname, email, username, password
+            firstname, lastname, email, username, hashed_password
         })
 
         if(create_account){
@@ -50,7 +78,7 @@ User = (function(){
                     firstname,
                     lastname, 
                     email,
-                    password
+                    username
                 },
             }
         }
@@ -66,10 +94,58 @@ User = (function(){
 
 
 
+    const loginUser = async (username, password) => {
+
+            //check that the username exists
+            const check_user_exists = await checkUserExistsByUsername(username);
+
+            if(check_user_exists.code === "error"){
+                //this user does not exist
+                return {
+                    message: "User does not exist",
+                    code: "error",
+                    type: "login-user"
+                }
+            }
+
+            //the user's data will be available on the data attribute
+            const retrieved_user_data = check_user_exists.data; 
+
+            //get the hashed passwor
+            const hashed_password = retrieved_user_data.password;
+           
+            //check that the password is correct
+            const compare_password_result = await bcrypt.compare(password, hashed_password)
+
+            if(!compare_password_result){
+                //this user does not exist
+                return {
+                    message: "Invalid Username/Password Combination!",
+                    code: "error",
+                    type: "login-user"
+                }
+
+            }
+
+
+            //login the user
+            return {
+                message: "User may be logged in", 
+                code: "success",
+                type: "login-user"
+            }
+
+
+    }
+
+
+
 
     return {
-        checkUserExistsByUsername: checkUserExistsByUsername,
-        createNewAccount: createNewAccount
+        checkUserExistsByUsername,
+        createNewAccount,
+        checkUserExistsByEmail,
+        loginUser
     }
 
 

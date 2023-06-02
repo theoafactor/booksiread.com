@@ -29,7 +29,30 @@ server.get("/", (request, response) => {
 
 
 //login
-server.post("/login", function(request, response){
+server.post("/login-user", async function(request, response){
+
+    let username = request.body.username;
+    let password = request.body.password;
+
+
+    const login_feedback = await User.loginUser(username, password)
+
+
+    if(login_feedback.code === "success"){
+        return response.status(200).send({
+            message: "User may be logged in",
+            code: "success",
+            data: null
+        })
+    }
+
+
+    return response.send({
+        message: `Issues logging this account in. ${login_feedback.message}`,
+        code: "error",
+        data: null
+    })
+    
 
 
 
@@ -52,8 +75,11 @@ server.post("/register-account", async (request, response) => {
 
     //check if this user exists already
     const check_feedback = await User.checkUserExistsByUsername(username);
+    const check_email_feedback = await User.checkUserExistsByEmail(email);
 
-    if(check_feedback.code === "error"){
+
+
+    if(check_feedback.code === "error" && check_email_feedback.code === "error"){
         //this user does not exist, create the account
         
         //create new Account
