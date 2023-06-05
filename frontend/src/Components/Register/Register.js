@@ -37,6 +37,13 @@ function Register(){
                         ...currentState,
                         firstname: value
                     })
+                }else{
+
+                    setState({
+                        ...currentState,
+                        firstname: ""
+                    })
+
                 }
                 
                 break;
@@ -47,6 +54,12 @@ function Register(){
                     setState({
                         ...currentState,
                         lastname: value
+                    })
+                }else{
+
+                    setState({
+                        ...currentState,
+                        lastname: ""
                     })
                 }
                 
@@ -59,6 +72,12 @@ function Register(){
                         ...currentState,
                         username: value
                     })
+                }else{
+                    setState({
+                        ...currentState,
+                        username: ""
+                    })
+
                 }
                     
                 break;
@@ -69,6 +88,12 @@ function Register(){
                     setState({
                         ...currentState,
                         email: value
+                    })
+                }else{
+
+                    setState({
+                        ...currentState,
+                        email: ""
                     })
                 }
                         
@@ -81,6 +106,13 @@ function Register(){
                         ...currentState,
                         password: value
                     })
+                }else{
+
+                    setState({
+                        ...currentState,
+                        password: ""
+                    })
+
                 }
                             
                 break;
@@ -91,6 +123,12 @@ function Register(){
                     setState({
                         ...currentState,
                         password_confirm: value
+                    })
+                }else{
+
+                    setState({
+                        ...currentState,
+                        password_confirm: ""
                     })
                 }
                                 

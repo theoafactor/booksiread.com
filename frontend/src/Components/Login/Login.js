@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Navbar from "../Sections/Navbar"
 import { useState } from "react"
 import axios from "axios";
@@ -9,8 +9,12 @@ function Login(){
         username: "",
         password: "",
         username_form_errors: '',
-        password_form_errors: ""
+        password_form_errors: "",
+        show_account_login_info: <></>
     });
+
+
+    const navigate = useNavigate()
 
     const handleInputUpdate = (event) => {
         let type = event.target.name;
@@ -23,6 +27,12 @@ function Login(){
                         ...currentState,
                         username: value
                     })
+                }else{
+                    setState({
+                        ...currentState,
+                        username: ""
+                    })
+
                 }
                 break;
 
@@ -32,6 +42,12 @@ function Login(){
                         ...currentState,
                         password: value
                     })
+                }else{
+                    setState({
+                        ...currentState,
+                        password: ""
+                    })
+
                 }
 
                 break;
@@ -61,6 +77,16 @@ function Login(){
 
         if(currentState.username.length !== 0 && currentState.password.length !== 0){
 
+                //start the spinner
+                setState({
+                    ...currentState,
+                    show_account_login_info:  <div>
+                                                <h5>Please wait while we sign you into your account ...</h5>
+                                                <div className="spinner-border" role="status">
+                                                    <span className="sr-only">Loading...</span>
+                                                </div>
+                                            </div>
+                })
         
                 
                const login_feedback = await axios.post("/login-user", {
@@ -73,8 +99,24 @@ function Login(){
                 )
 
 
-
+                //stop the spinner
                 console.log(login_feedback)
+                if(login_feedback.data.code === "success"){
+                    //this user may now be logged in 
+                    setState({
+                        ...currentState,
+                        username: "",
+                        password: "",
+                        show_account_login_info: <div className="alert alert-success">You are logged in! Redirecting you to your dashboard ...</div>
+                    })
+                   setTimeout(() => {
+                            // - go to the home page right away
+                            // - in the navigate function, the second argument is an object with a property 'replace' set to true
+                            //this will prevent the 'back' functionality from working.
+                            //this feature may not work as expected here due to how we are applying it
+                            navigate("user", { replace: true })
+                   }, 2000)
+                }
 
         }else{
 
@@ -103,6 +145,9 @@ function Login(){
                                 <div className="card">
                                     <div className="card-body">
                                         <h5>Sign in</h5>
+                                        <hr />
+                                        {currentState.show_account_login_info}
+
                                         <form className="form" method="POST" onSubmit={loginUser}>
                                             <div className="form-group">
                                                 <label>Username</label>

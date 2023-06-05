@@ -67,7 +67,7 @@ User = (function(){
         const hashed_password = await bcrypt.hash(password, 10);
 
         const create_account = mongo_client.db(process.DB_NAME).collection("users").insertOne({
-            firstname, lastname, email, username, hashed_password
+            firstname, lastname, email, username, password: hashed_password
         })
 
         if(create_account){
@@ -113,6 +113,8 @@ User = (function(){
 
             //get the hashed passwor
             const hashed_password = retrieved_user_data.password;
+
+            console.log("User data retrieved: ", retrieved_user_data)
            
             //check that the password is correct
             const compare_password_result = await bcrypt.compare(password, hashed_password)
