@@ -124,7 +124,8 @@ User = (function(){
                 return {
                     message: "Invalid Username/Password Combination!",
                     code: "error",
-                    type: "login-user"
+                    data: null,
+                    type: "login-user",
                 }
 
             }
@@ -134,6 +135,7 @@ User = (function(){
             return {
                 message: "User may be logged in", 
                 code: "success",
+                data: check_user_exists,
                 type: "login-user"
             }
 

@@ -1,4 +1,6 @@
 const express = require("express");
+const express_session = require("express-session"); //bring in the session
+const MongoDBSession = require("connect-mongodb-session")(express_session)
 const mongodb = require("mongodb");
 const cors = require("cors");
 const User = require("./auth/User")
@@ -10,12 +12,25 @@ require("dotenv").config(); //for reading .env files
 const server = express();
 
 
-
-
-
 //middleware
+const mongo_db_session_store = new MongoDBSession({ 
+    uri: process.env.DB_URL,
+    collection: process.env.SESSION_STORE
+})
+
+
+//add the express session
+server.use(express_session({
+    resave: false,
+    saveUninitialized: false,
+    secret: "randomkeytosignsessionkey",
+    store: mongo_db_session_store
+}))
+
+
 server.use(cors()); 
 server.use(express.json()) //to read json data
+
 
 
 //routes
@@ -24,6 +39,19 @@ server.get("/", (request, response) => {
     response.send({
         message: "Server works fine"
     })
+
+});
+
+
+//logout user
+server.post("/logout-user", function(request, response){
+    //get the session_id 
+    const session_id = request.body.session_id;
+
+    //if there is a session id .. 
+    console.log("Delete Session ID: ", session_id)
+
+
 
 });
 
@@ -39,11 +67,22 @@ server.post("/login-user", async function(request, response){
 
 
     if(login_feedback.code === "success"){
-        return response.status(200).send({
-            message: "User may be logged in",
-            code: "success",
-            data: null
-        })
+        
+        //perform the actual logging in ..
+        request.session.user = login_feedback.data;
+
+        if(request.session.user){
+            return response.status(200).send({
+                message: "User may be logged in",
+                code: "success",
+                data: login_feedback.data
+            })
+        }
+
+        //
+
+
+
     }
 
 

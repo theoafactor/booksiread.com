@@ -6,11 +6,14 @@ import Login from './Components/Login/Login';
 import User from "./Components/User/User";
 import './App.css';
 import { createContext } from 'react';
+import { AuthProvider } from './Utilities/Auth/Auth';
 
 /**
  * - We need a way to centrally manage data/props. 
  * For this, we will be using useContext
  */
+
+
 
 
 function App() {
@@ -21,12 +24,14 @@ function App() {
 
 
   return (
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/user" element={<User />}></Route>
-      </Routes>
+        <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/user" element={<User />}></Route>
+           </Routes>
+        </AuthProvider>
   );
 }
 

@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import Navbar from "../Sections/Navbar"
 import { useState } from "react"
 import axios from "axios";
+import { useAuth } from "../../Utilities/Auth/Auth";
 
 function Login(){
 
@@ -12,6 +13,8 @@ function Login(){
         password_form_errors: "",
         show_account_login_info: <></>
     });
+
+    const use_auth = useAuth()
 
 
     const navigate = useNavigate()
@@ -57,7 +60,7 @@ function Login(){
 
     }
 
-
+   
 
     const loginUser = async (event) => {
         event.preventDefault();
@@ -87,36 +90,38 @@ function Login(){
                                                 </div>
                                             </div>
                 })
-        
                 
-               const login_feedback = await axios.post("/login-user", {
-                    username: currentState.username,
-                    password: currentState.password
-                }, 
-                {
-                    withCredentials: true
-                }
-                )
+
+               //log in the user 
+               let login_result = await use_auth.loginUser(currentState.username, currentState.password)
 
 
-                //stop the spinner
-                console.log(login_feedback)
-                if(login_feedback.data.code === "success"){
-                    //this user may now be logged in 
+               if(login_result.data.code === "success"){
+                    
                     setState({
+
                         ...currentState,
-                        username: "",
-                        password: "",
                         show_account_login_info: <div className="alert alert-success">You are logged in! Redirecting you to your dashboard ...</div>
+
                     })
-                   setTimeout(() => {
-                            // - go to the home page right away
-                            // - in the navigate function, the second argument is an object with a property 'replace' set to true
-                            //this will prevent the 'back' functionality from working.
-                            //this feature may not work as expected here due to how we are applying it
-                            navigate("user", { replace: true })
-                   }, 2000)
-                }
+
+
+                    setTimeout(function(){
+                        //navigate or redirect the user after 3 seconds to their dashboard
+                        
+                        //navigate to the home page
+                        //set the replace to be true
+                        //this will prevent the user from being able to go back to home
+                        navigate("/user", { replace: true });
+
+                    }, 3000)
+
+
+               }
+
+                
+        
+               
 
         }else{
 
