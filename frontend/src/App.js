@@ -6,7 +6,7 @@ import Login from './Components/Login/Login';
 import User from "./Components/User/User";
 import './App.css';
 import { createContext } from 'react';
-import { AuthProvider } from './Utilities/Auth/Auth';
+import { AuthProvider } from './Auths/Auth/Auth';
 
 /**
  * - We need a way to centrally manage data/props. 

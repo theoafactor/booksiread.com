@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import Navbar from "../Sections/Navbar"
 import { useState } from "react"
 import axios from "axios";
-import { useAuth } from "../../Utilities/Auth/Auth";
+import { useAuth } from "../../Auths/Auth/Auth";
 
 function Login(){
 
