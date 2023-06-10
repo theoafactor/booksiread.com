@@ -11,9 +11,18 @@ require("dotenv").config(); //for reading .env files
 //create the application 
 const server = express();
 
+// const mongo_client = new mongodb.MongoClient(process.env.DB_URL);
+
+// //create database
+// try{
+//     mongo_client.db(process.env.DB_NAME);
+// }catch(e){
+//     console.log("Could not create the database ...")
+// }
 
 //middleware
 const mongo_db_session_store = new MongoDBSession({ 
+    databaseName: process.env.DB_NAME,
     uri: process.env.DB_URL,
     collection: process.env.SESSION_STORE
 })

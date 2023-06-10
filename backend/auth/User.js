@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 require("dotenv").config(); //for reading .env files
 const mongo_client = new mongodb.MongoClient(process.env.DB_URL);
 
+mongo_client.db(process.env.DB_NAME);
+
 User = (function(){
 
     /**
