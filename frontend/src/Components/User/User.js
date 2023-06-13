@@ -4,15 +4,17 @@ import { useAuth } from "../../Auths/Auth/Auth"
 
 function User(){
 
-    const auth = useAuth();
-    const navigate = useNavigate();
+        const auth = useAuth();
+        const navigate = useNavigate();
+
+            
    
     return <>
             <Dashnav></Dashnav>
-            { auth.checkUserAuth == null ? navigate("/login") : 
+
                 <>
                     <div className="jumbotron">
-                        <h5>Welcome {auth.user.firstname}!</h5>
+                        <h5>Welcome!</h5>
                         <h3>Books I Read &gt; <small>A curated list of books all of us are currently reading ...</small></h3>
                         <hr></hr>
                         <p>
@@ -28,7 +30,7 @@ function User(){
 
                     </div>
                 </>
-}
+
         </>
 
 

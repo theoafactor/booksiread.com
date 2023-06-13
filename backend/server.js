@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const express_session = require("express-session"); //bring in the session
 const MongoDBSession = require("connect-mongodb-session")(express_session)
 const mongodb = require("mongodb");
@@ -19,16 +20,29 @@ const mongo_db_session_store = new MongoDBSession({
 })
 
 
+server.use(express.urlencoded({
+    extended: true
+}))
+
+
+server.use(cookieParser());
+
 //add the express session
 server.use(express_session({
     resave: false,
     saveUninitialized: false,
     secret: "randomkeytosignsessionkey",
-    store: mongo_db_session_store
+    store: mongo_db_session_store,
+    cookie: {
+        httpOnly: false
+    }
 }))
 
 
-server.use(cors()); 
+server.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+})); 
 server.use(express.json()) //to read json data
 
 
@@ -92,6 +106,17 @@ server.post("/login-user", async function(request, response){
         data: null
     })
     
+
+
+
+});
+
+
+server.get("/get-logged-in-user", async (request, response) => {
+
+    const current_session = request.body.current_session;
+
+    console.log(current_session)
 
 
 

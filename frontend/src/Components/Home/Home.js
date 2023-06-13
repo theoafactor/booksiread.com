@@ -1,6 +1,30 @@
 import Navbar from "../Sections/Navbar";
+import { useAuth } from "../../Auths/Auth/Auth";
+import { useNavigate } from "react-router-dom";
 
 function Home(){
+
+    const auth = useAuth();
+    // const navigate = useNavigate()
+
+    // console.log("Get auth: ", auth);
+
+    // auth.checkUserAuth().then(( check_user_auth) => {
+    //     if(check_user_auth){
+    //         //the user is still logged in ...
+    //         //get the user data 
+    //         console.log("From auth: ", check_user_auth)
+
+    //         navigate("user")
+
+            
+    // }
+
+
+    // })
+
+    
+
 
     return <>
                 <Navbar></Navbar>
