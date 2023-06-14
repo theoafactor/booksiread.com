@@ -3,7 +3,7 @@ import { useAuth } from "../../../Auths/Auth/Auth";
 
 
 
-async function Dashnav(){
+function Dashnav(){
 
         const auth = useAuth();
 
@@ -21,6 +21,8 @@ async function Dashnav(){
 
         const logoutUser = async (event) => {
                 event.preventDefault();
+
+                console.log("Logged out user")
 
                 const logout_feedback = await auth.logoutUser();
 

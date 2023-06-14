@@ -58,13 +58,21 @@ server.get("/", (request, response) => {
 
 
 //logout user
-server.post("/logout-user", function(request, response){
+server.post("/logout-user", async function(request, response){
     //get the session_id 
     const session_id = request.body.session_id;
 
     //if there is a session id .. 
     console.log("Delete Session ID: ", session_id)
 
+
+    //destroy the current session
+    await request.session.destroy()
+
+    return response.send({
+        message: "user session deleted",
+        code: "logged-out"
+    })
 
 
 });

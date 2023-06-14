@@ -1,10 +1,10 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation, Navigate } from "react-router-dom"
 import Navbar from "../Sections/Navbar"
 import { useState } from "react"
 import axios from "axios";
 import { useAuth } from "../../Auths/Auth/Auth";
 
-function Login(){
+function Login(props){
 
     const [currentState, setState] = useState({
         username: "",
@@ -14,10 +14,14 @@ function Login(){
         show_account_login_info: <></>
     });
 
-    const use_auth = useAuth()
+    const auth = useAuth()
+
+    console.log("Checking: ", auth)
 
 
     const navigate = useNavigate()
+
+    const location = useLocation()
 
     const handleInputUpdate = (event) => {
         let type = event.target.name;
@@ -93,7 +97,7 @@ function Login(){
                 
 
                //log in the user 
-               let login_result = await use_auth.loginUser(currentState.username, currentState.password)
+               let login_result = await auth.loginUser(currentState.username, currentState.password)
 
 
                if(login_result.data.code === "success"){
@@ -140,8 +144,23 @@ function Login(){
 
     }
 
+
+    function navigate_to_home(){
+        location.pathname = "/user"
+
+        navigate("/user", { replace: true })
+
+        // Navigate({
+        //     to: "/user",
+        //     replace: true
+        // })
+
+    }
+
     return <>
-        <Navbar></Navbar>
+            {auth.user != null && auth.user.is_user_logged_in === true ? navigate_to_home() : 
+                <>
+                    <Navbar></Navbar>
         <div className="container">
                 <div className="row">
                     <div className="col-md-8 mt-5 mx-auto">
@@ -150,6 +169,9 @@ function Login(){
                                     <div className="card-body">
                                         <h5>Sign in</h5>
                                         <hr />
+                                        
+                                        {!props.children ? '' : props.children }
+
                                         {currentState.show_account_login_info}
 
                                         <form className="form" method="POST" onSubmit={loginUser}>
@@ -183,6 +205,9 @@ function Login(){
                     </div>
                 </div>
             </div>
+                </>
+                
+            }
      </>
 }
 

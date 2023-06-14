@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../Sections/Navbar";
 import { useState, useEffect } from "react";
+import { useAuth } from "../../Auths/Auth/Auth";
 import axios from "axios";
 
 /**
@@ -8,6 +9,9 @@ import axios from "axios";
  * @returns 
  */
 function Register(){
+
+    const auth = useAuth()
+    const navigate = useNavigate()
 
     const [currentState, setState] = useState({
         firstname: "",
@@ -21,6 +25,8 @@ function Register(){
         show_account_creation_info: <></>
     });
 
+
+    console.log("From Register: ", auth)
 
 
 
@@ -271,10 +277,19 @@ function Register(){
     }) : null
 
 
+    function redirect_to_home(){
+
+        return navigate("/user", { replace: true})
+
+    }
+
 
 
     return <>
-    <Navbar></Navbar>
+                {auth.user != null && auth.user.is_user_logged_in === true ? redirect_to_home() : 
+                
+                <>
+                    <Navbar></Navbar>
     <div className="container">
             
             <div className="row">
@@ -328,7 +343,9 @@ function Register(){
                 </div>
             </div>
         </div>
- </>
+                    
+                </>}
+            </>
 
 
 }

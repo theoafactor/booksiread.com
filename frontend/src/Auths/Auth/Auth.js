@@ -67,7 +67,7 @@ export function AuthProvider({ children }){
 
 
             //set this user to the storage..
-            localforage.setItem("bir_user", new_user).then(() => {
+            localforage.setItem("bir_user", JSON.stringify(new_user)).then(() => {
 
                 //set the user
                 setUser(new_user);
@@ -98,28 +98,49 @@ export function AuthProvider({ children }){
 
         //perform some logic here, like unsetting the cookies...
         const session_id = Cookies.get("connect.sid");
+
+        console.log("Logging out from auth")
         //console.log(session_id)
         const logout_feedback = await axios.post("/logout-user", { session_id });
 
+        console.log(logout_feedback)
 
-        //once successful ...
-        //set the user to default
-        setUser({
-            ...user,
-            username: "",
-            password: "",
-            email: "",
-            show_account_login_info: <></>,
-            is_user_logged_in: false
+        if(logout_feedback.data.code === "logged-out"){
 
-        })
+                await localforage.removeItem("bir_user")
+
+                Cookies.remove("connect.sid")
+
+                 //once successful ...
+                //set the user to default
+                setUser({
+                    ...user,
+                    username: "",
+                    password: "",
+                    email: "",
+                    show_account_login_info: <></>,
+                    is_user_logged_in: false
+
+                })
+
+                return {
+                    message: "logout successful",
+                    code: "logged-out"
+        
+                }
+
+        }
 
 
         return {
-            message: "logout successful",
-            code: "logged-out"
-
+            message: "User could not be logged out",
+            code: "error"
         }
+
+
+       
+
+       
 
     }
 
@@ -133,6 +154,7 @@ export function AuthProvider({ children }){
                 localforage.getItem("bir_user").then(( current_user) => {
                     if(current_user != null || typeof current_user != undefined){
                         console.log(current_user)
+                        current_user = JSON.parse(current_user)
                         setUser(current_user);
                     }else{
                        
