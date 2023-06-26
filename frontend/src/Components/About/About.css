@@ -1,0 +1,163 @@
+.about-section {
+    margin-left: 1rem;
+    display: flex;
+    justify-content: space-between;
+    /* gap: 10rem; */
+    margin: 3rem;
+    gap: 2rem;
+}
+
+
+
+.about-title {
+    color: #0f60d6;
+    background-color: #eef4fc;
+    font-size: 1.5rem;
+    width: fit-content;
+    border-radius: 1rem;
+    text-align: center;
+}
+.about-title h6{
+    padding: .3rem 1rem;
+}
+
+.about-content {
+    width: fit-content;
+
+    text-transform: capitalize;
+}
+
+.about-content h1 {
+    font-size: 3rem;
+}
+
+
+.about-content span {
+    color: #808080;
+}
+
+    .about-img {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .7rem;
+}
+
+.about-img img {
+    width: 100%;
+    height: 100%;
+
+}
+
+.learn {
+    cursor: pointer;
+}
+
+.learn:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+
+.about-section-content-sub {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-right: 15rem;
+}
+
+.about-section-content-sub p {
+    font-size: 1rem;
+    color: #808080;
+}
+
+.about-banner img {
+    width: 100%;
+    height: 50vh;
+}
+
+.about-details {
+    display: flex;
+    justify-content: space-between;
+    margin: 3rem;
+    align-items: center;
+    border-top: 1px solid #000;
+}
+
+.about-details h3 {
+    font-size: 5rem;
+    text-transform: capitalize;
+    margin-top: 1rem;
+} 
+
+.about-details-content {
+    width: 60%;
+}
+
+.about-details-content h5 {
+    font-size: 2rem;
+    margin-top: 3rem;
+}
+.about-details-content p {
+    font-size: 0.9rem;
+}
+
+.community-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stats p {
+    font-size: .9rem;
+}
+
+.stats h4 {
+    font-size: 2rem;
+    color: #808080;
+}
+
+.team-heading {
+    margin: 3rem;
+    border-top: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.team-heading-details h1{
+    text-align: center;
+    text-transform: capitalize;
+    letter-spacing: .6rem;
+    margin:1.5rem;
+}
+
+.team-mate {
+    display: flex;
+    gap: 3rem;
+}
+
+.team-mate-content img {
+    width: 7.6rem;
+}
+
+.team-mate-details {
+    text-align: center;
+}
+
+.team-mate-details h6 {
+    font-size: 1rem;
+}
+
+.team-mate-details p {
+    color: #808080;
+    text-transform: capitalize;
+}
+
+
+
+
+
+
+
+
