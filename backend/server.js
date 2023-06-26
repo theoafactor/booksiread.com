@@ -27,8 +27,13 @@ server.use(express_session({
     store: mongo_db_session_store
 }))
 
+//add cors 
+server.use(cors({
+    origin: ["http://localhost:3000"],
+    optionsSuccessStatus: 200,   
+})); 
 
-server.use(cors()); 
+
 server.use(express.json()) //to read json data
 
 
