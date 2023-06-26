@@ -7,11 +7,22 @@ function Dashnav(){
 
         const auth = useAuth();
 
+        // const check_user_auth = await auth.checkUserAuth()
+
+        // if(check_user_auth){
+        //         //the user is still logged in ...
+        //         //get the user data 
+        //         console.log("From auth: ", check_user_auth)
+                
+        // }
+
         const navigate = useNavigate();
 
 
         const logoutUser = async (event) => {
                 event.preventDefault();
+
+                console.log("Logged out user")
 
                 const logout_feedback = await auth.logoutUser();
 
