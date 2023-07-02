@@ -66,7 +66,7 @@ User = (function(){
         //hash the password
         const hashed_password = await bcrypt.hash(password, 10);
 
-        const create_account = mongo_client.db(process.DB_NAME).collection("users").insertOne({
+        const create_account = mongo_client.db(process.env.DB_NAME).collection("users").insertOne({
             firstname, lastname, email, username, password: hashed_password
         })
 

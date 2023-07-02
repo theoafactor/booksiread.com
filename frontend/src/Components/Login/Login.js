@@ -100,7 +100,7 @@ function Login(props){
                let login_result = await auth.loginUser(currentState.username, currentState.password)
 
 
-               if(login_result.data.code === "success"){
+               if(login_result && login_result.data.code === "success"){
                     
                     setState({
 
@@ -119,6 +119,15 @@ function Login(props){
                         navigate("/user", { replace: true });
 
                     }, 3000)
+
+
+               }else{
+                    //this user could not be logged in 
+
+                    setState({
+                        ...currentState,
+                        show_account_login_info: <div className="alert alert-danger">We could not log you in at the moment. Please check your username/password</div>
+                    })
 
 
                }

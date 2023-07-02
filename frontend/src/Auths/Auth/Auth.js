@@ -169,10 +169,10 @@ export function AuthProvider({ children }){
 
     }, []) //run this only once
 
-
+    console.log("CHildren: ", children)
 
     //this Auth
-    return <AuthContext.Provider value={{ user, loginUser, logoutUser, checkUserAuth }}>{children}</AuthContext.Provider>
+    return <AuthContext.Provider value={ { user, loginUser, logoutUser, checkUserAuth } }>{children}</AuthContext.Provider>
 
 }
 

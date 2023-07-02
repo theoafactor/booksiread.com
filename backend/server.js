@@ -1,5 +1,4 @@
 const express = require("express");
-const cookieParser = require("cookie-parser");
 const express_session = require("express-session"); //bring in the session
 const MongoDBSession = require("connect-mongodb-session")(express_session)
 const mongodb = require("mongodb");
@@ -12,6 +11,8 @@ require("dotenv").config(); //for reading .env files
 //create the application 
 const server = express();
 
+//resolve
+
 
 //middleware
 const mongo_db_session_store = new MongoDBSession({ 
@@ -20,22 +21,12 @@ const mongo_db_session_store = new MongoDBSession({
 })
 
 
-server.use(express.urlencoded({
-    extended: true
-}))
-
-
-server.use(cookieParser());
-
 //add the express session
 server.use(express_session({
     resave: false,
     saveUninitialized: false,
     secret: "randomkeytosignsessionkey",
-    store: mongo_db_session_store,
-    cookie: {
-        httpOnly: false
-    }
+    store: mongo_db_session_store
 }))
 
 //add cors 
@@ -45,13 +36,6 @@ server.use(cors({
 })); 
 
 
-<<<<<<< HEAD
-=======
-server.use(cors({
-    origin: "http://localhost:3000",
-    credentials: true
-})); 
->>>>>>> 257ff27a7b641b45bae1c5d7abc792a5a02996b4
 server.use(express.json()) //to read json data
 
 
@@ -67,21 +51,13 @@ server.get("/", (request, response) => {
 
 
 //logout user
-server.post("/logout-user", async function(request, response){
+server.post("/logout-user", function(request, response){
     //get the session_id 
     const session_id = request.body.session_id;
 
     //if there is a session id .. 
     console.log("Delete Session ID: ", session_id)
 
-
-    //destroy the current session
-    await request.session.destroy()
-
-    return response.send({
-        message: "user session deleted",
-        code: "logged-out"
-    })
 
 
 });
@@ -123,17 +99,6 @@ server.post("/login-user", async function(request, response){
         data: null
     })
     
-
-
-
-});
-
-
-server.get("/get-logged-in-user", async (request, response) => {
-
-    const current_session = request.body.current_session;
-
-    console.log(current_session)
 
 
 
