@@ -1,5 +1,6 @@
 const mongodb = require("mongodb");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 require("dotenv").config(); //for reading .env files
 const mongo_client = new mongodb.MongoClient(process.env.DB_URL)
@@ -132,6 +133,13 @@ User = (function(){
 
 
             //login the user
+            //sign the user with jwt
+            // jwt.sign()
+
+     
+
+            
+
             return {
                 message: "User may be logged in", 
                 code: "success",

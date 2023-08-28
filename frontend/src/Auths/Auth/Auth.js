@@ -54,14 +54,14 @@ export function AuthProvider({ children }){
 
         if(login_feedback.data.code === "success"){
             //this user has been logged in
-
+            console.log(login_feedback.data)
             //update the state 
             const new_user = {
                 ...user,
-                firstname: login_feedback.data.data.data.firstname,
-                lastname: login_feedback.data.data.data.lastname,
-                username: login_feedback.data.data.data.username,
-                email: login_feedback.data.data.data.email,
+                firstname: login_feedback.data.data.firstname,
+                lastname: login_feedback.data.data.lastname,
+                username: login_feedback.data.data.username,
+                email: login_feedback.data.data.email,
                 is_user_logged_in: true
             }
 

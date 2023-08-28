@@ -2,6 +2,8 @@ const express = require("express");
 const express_session = require("express-session"); //bring in the session
 const MongoDBSession = require("connect-mongodb-session")(express_session)
 const mongodb = require("mongodb");
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const User = require("./auth/User")
 require("dotenv").config(); //for reading .env files
@@ -20,6 +22,13 @@ const mongo_db_session_store = new MongoDBSession({
     collection: process.env.SESSION_STORE
 })
 
+
+// mongoose.connect(process.env.DB_URL).then((result) => {
+//     console.log('Database connected ...');
+    
+//     server.listen(4343, () => console.log(`Server is listening on http://localhost:4343`))
+
+// })
 
 //add the express session
 server.use(express_session({
@@ -74,17 +83,32 @@ server.post("/login-user", async function(request, response){
 
 
     if(login_feedback.code === "success"){
+
+        jwt.sign({ user: login_feedback.data }, "thisismysecretkey", (error, token) => {
+
+            console.log("Token: ", token)
+
+            response.json({
+                message: "User logged in successfully",
+                code: "success",
+                type: "login-user",
+                data: {
+                    token: token
+                }
+            })
+
+        })
         
         //perform the actual logging in ..
-        request.session.user = login_feedback.data;
+        // request.session.user = login_feedback.data;
 
-        if(request.session.user){
-            return response.status(200).send({
-                message: "User may be logged in",
-                code: "success",
-                data: login_feedback.data
-            })
-        }
+        // if(request.session.user){
+        //     return response.status(200).send({
+        //         message: "User may be logged in",
+        //         code: "success",
+        //         data: login_feedback.data
+        //     })
+        // }
 
         //
 
@@ -93,11 +117,11 @@ server.post("/login-user", async function(request, response){
     }
 
 
-    return response.send({
-        message: `Issues logging this account in. ${login_feedback.message}`,
-        code: "error",
-        data: null
-    })
+    // response.send({
+    //     message: `Issues logging this account in. ${login_feedback.message}`,
+    //     code: "error",
+    //     data: null
+    // })
     
 
 
@@ -169,9 +193,9 @@ server.post("/register-account", async (request, response) => {
 
 });
 
-
-
 server.listen(4343, () => console.log(`Server is listening on http://localhost:4343`))
+
+
 
 
 
