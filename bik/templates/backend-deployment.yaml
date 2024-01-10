@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: theoafactor/bik_back:core1
+        ports:
+        - containerPort: 4343
+
+        env: 
+        - name: DB_NAME
+          value: books_i_read
+        - name: DB_USER
+          value: root
+        - name: DB_PASSWORD
+          value: password
+        - name: PORT
+          value: "4343"
+        - name: SESSION_STORE
+          value: books_i_read_session
+        - name: DB_URL
+          value: mongodb://root:password@mongo:27017
+
+        
+
+
+      

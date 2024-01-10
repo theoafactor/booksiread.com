@@ -44,7 +44,7 @@ export function AuthProvider({ children }){
     //handles when the user is logged in 
     const loginUser = async (username, password) => {
 
-        const login_feedback = await axios.post("/login-user", {
+        const login_feedback = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/login-user`, {
 
             username: username,
             password: password
@@ -93,7 +93,7 @@ export function AuthProvider({ children }){
         //perform some logic here, like unsetting the cookies...
         const session_id = Cookies.get("connect.sid");
         console.log(session_id)
-        const logout_feedback = await axios.post("/logout-user", { session_id });
+        const logout_feedback = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/logout-user`, { session_id });
 
 
         //once successful ...

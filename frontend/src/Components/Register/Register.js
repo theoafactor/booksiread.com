@@ -204,7 +204,7 @@ function Register(){
             })
 
 
-            const registration_feedback = await axios.post("/register-account", {
+            const registration_feedback = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/register-account`, {
                 firstname: currentState.firstname,
                 lastname: currentState.lastname,
                 username: currentState.username,
