@@ -13,6 +13,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: theoafactor/bik_front:core3
+        image: theoafactor/bir_class101_frontend:2
         ports:
         - containerPort: 3000
