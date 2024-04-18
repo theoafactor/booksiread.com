@@ -13,7 +13,7 @@ jobs:
         
         - name: "Build the image"
           run: |
-                sudo docker build -t theoafactor/bik_latest:123 ../frontend/Dockerfile
+                sudo docker build -t theoafactor/bik_latest:123 frontend/
             
         # - name: "Push the image to DockerHub"
         #   run: |
