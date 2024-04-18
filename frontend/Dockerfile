@@ -20,7 +20,7 @@ COPY --from=BUILD_IMAGE /home/app/build/ /home/app/build/
 
 COPY package.json .
 
-COPY .env .
+# COPY .env .
 
 RUN npm install -g serve 
 
