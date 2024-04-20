@@ -17,7 +17,7 @@ jobs:
               # echo "APP_VERSION=${RANDOM}" >> $GITHUB_ENV
               APP_VERSION=1234
               # echo $APP_VERSION
-              echo $APP_VERSION >> $GITHUB_ENV
+              echo "$APP_VERSION" >> $GITHUB_ENV
         
         - name: "Build the image"
           run: |
