@@ -15,11 +15,12 @@ jobs:
         - name: "Print the Github object"
           run: |
               echo "APP_VERSION=${RANDOM}" >> GITHUB_ENV
+              echo $APP_VERSION
         
         - name: "Build the image"
           run: |
                 echo $APP_VERSION
-                echo $GITHUB_ENV
+                # echo $GITHUB_ENV
 
                 #sudo docker build -t theoafactor/bik_latest:$APP_VERSION frontend/
 
