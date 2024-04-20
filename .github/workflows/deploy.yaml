@@ -4,8 +4,6 @@ on:
         branches:
             - tests
 
-env: 
-  APP_VERSION: 128
 
 jobs: 
     simple_deploy:
@@ -16,7 +14,7 @@ jobs:
 
         - name: "Print the Github object"
           run: |
-              echo $GITHUB_ENV
+              echo "APP_VERSION=${RANDOM}" >> GITHUB_ENV
         
         - name: "Build the image"
           run: |
