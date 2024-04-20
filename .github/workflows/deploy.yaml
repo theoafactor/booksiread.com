@@ -33,6 +33,18 @@ jobs:
           run: |
                 docker push theoafactor/bik_latest:${{ env.APP_VERSION }}
 
+        - name: "Announce the latest version of the deployment"
+          uses: dawidd6/action-send-mail@v3
+          with:
+            username: theoafactor@gmail.com
+            password: ${{ secrets.EMAIL_PASSWORD }}
+            server_address: smtp.gmail.com
+            secure: true
+            subject: "New Docker Image Version for Simple Web App"
+            to: "theoafactor@gmail.com"
+            from: Olu Adeyemo <theoafactor@gmail.com>
+            body: "New image build: ${{ env.APP_VERSION }}"
+
 
             
 
