@@ -8,7 +8,7 @@ function Home(){
                     <h3>Books I Love to Read &gt; <small>A curated list of books all of us are currently reading ...</small></h3>
                     <hr></hr>
                     <p>
-                        <button className="btn btn-lg btn-dark">Add Your Book Listing</button>
+                        <button className="btn btn-lg btn-danger">Add Your Books</button>
                     </p>
                 </div>
                 <div className="container-fluid">
