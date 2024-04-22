@@ -14,10 +14,16 @@ jobs:
       
       - name: "Checkout"
         uses: actions/checkout@v4
+
+      - name: "Create version number"
+        run: |
+          echo "APP_VERSION=${RANDOM}" >> $GITHUB_ENV
+
+          echo ${{ env.APP_VERSION }}
       
       - name: "Build a Docker image from the repo"
         run:  | 
-          docker build -t theoafactor/simplewebapp101 frontend/
+          docker build -t theoafactor/simplewebapp:${{ env.APP_VERSION }} frontend/
 
       - name: "Log into Docker Hub"
         uses: docker/login-action@v3
@@ -27,7 +33,7 @@ jobs:
 
       - name: "Push to Docker Hub"
         run: |
-          docker push theoafactor/simplewebapp101 
+          docker push theoafactor/simplewebapp:${{ env.APP_VERSION }}
 
       
 
