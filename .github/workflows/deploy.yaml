@@ -2,7 +2,7 @@ name: Simple App Deployment
 on: 
     push: 
       branches: 
-        - test
+        - tests
 
 jobs: 
   testdeployment:
