@@ -13,6 +13,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: theoafactor/simplewebapp101
+        image: theoafactor/simplewebapp:14817
         ports:
         - containerPort: 3000
