@@ -21,9 +21,13 @@ jobs:
 
           #echo ${{ env.APP_VERSION }}
       
-      - name: "Build a Docker image from the repo"
+      - name: "Build a Docker image from the repo v1"
         run:  | 
           docker build -t theoafactor/simplewebapp:v1 frontend/
+
+      - name: "Build a Docker image from the repo version2"
+        run:  | 
+            docker build -t theoafactor/simplewebapp:v2 frontend/
 
       - name: "Log into Docker Hub"
         uses: docker/login-action@v3
@@ -33,7 +37,8 @@ jobs:
 
       - name: "Push to Docker Hub"
         run: |
-          docker push theoafactor/simplewebapp:v1
+          docker push theoafactor/simplewebapp:v1 && 
+          docker push theoafactor/simplewebapp:v2
 
 
       # - name: "Announce the latest version of the deployment"
