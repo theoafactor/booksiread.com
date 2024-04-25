@@ -17,13 +17,13 @@ jobs:
 
       - name: "Create version number"
         run: |
-          echo "APP_VERSION=${RANDOM}" >> $GITHUB_ENV
+          #echo "APP_VERSION=${RANDOM}" >> $GITHUB_ENV
 
-          echo ${{ env.APP_VERSION }}
+          #echo ${{ env.APP_VERSION }}
       
       - name: "Build a Docker image from the repo"
         run:  | 
-          docker build -t theoafactor/simplewebapp:${{ env.APP_VERSION }} frontend/
+          docker build -t theoafactor/simplewebapp:v1 frontend/
 
       - name: "Log into Docker Hub"
         uses: docker/login-action@v3
@@ -33,21 +33,21 @@ jobs:
 
       - name: "Push to Docker Hub"
         run: |
-          docker push theoafactor/simplewebapp:${{ env.APP_VERSION }}
+          docker push theoafactor/simplewebapp:v1
 
 
-      - name: "Announce the latest version of the deployment"
-        uses: dawidd6/action-send-mail@v3
-        with:
-          username: theoafactor@gmail.com
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          subject: "New Docker Image Version for Simple Web App"
-          to: "theoafactor@gmail.com"
-          from: Olu Adeyemo <theoafactor@gmail.com>
-          body: "New image build: ${{ env.APP_VERSION }}"
+      # - name: "Announce the latest version of the deployment"
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     username: theoafactor@gmail.com
+      #     password: ${{ secrets.EMAIL_PASSWORD }}
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     secure: true
+      #     subject: "New Docker Image Version for Simple Web App"
+      #     to: "theoafactor@gmail.com"
+      #     from: Olu Adeyemo <theoafactor@gmail.com>
+      #     body: "New image build: ${{ env.APP_VERSION }}"
 
       
 

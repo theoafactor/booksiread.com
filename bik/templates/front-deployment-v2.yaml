@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: frontend_v2
 spec:
   replicas: 1
   selector:
@@ -13,7 +13,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - name: frontend
-        image: theoafactor/simplewebapp:v1
+      - name: frontend_v2
+        image: theoafactor/simplewebapp:v2
         ports:
         - containerPort: 3000
