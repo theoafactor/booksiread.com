@@ -27,10 +27,39 @@ jobs:
               run: |
                 #  Pushes this code to the Docker registry
                 docker push theoafactor/clusterbik:first_test 
+
+            - name: "Setup Kubectl"
+              uses: azure/setup-kubectl@v3
+              with: 
+                version: "1.24.0"
+              id: install
+
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with: 
+                aws-region: "eu-west-2"
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+
+            - name: "Setup the cluster"
+              run: |
+                aws eks update-kubeconfig --name testcluster 
+
+            - name: "Install Helm for this cluster"
+              uses: azure/setup-helm@v4.2.0
+              id: install-helm
+
+            - name: "Install the helm charts"
+              run: |
+                helm install bik bik
+              
+
                 
             - name: "All set, might be time to pull the image into a cluster"
               run: |
                 echo "Pulls the image into a cluster"
+
+
 
             
 
