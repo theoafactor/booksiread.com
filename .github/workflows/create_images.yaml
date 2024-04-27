@@ -14,7 +14,7 @@ jobs:
               run: |
                 
                 # build the image for the frontend
-                docker build -t theoafactor/clusterbik:first_test1 frontend/
+                docker build -t theoafactor/clusterbik:first_test2 frontend/
 
             - name: "Logs into the Docker registry"
               uses: docker/login-action@v3
@@ -26,7 +26,7 @@ jobs:
             - name: "Pushes the image to the Docker registry"
               run: |
                 #  Pushes this code to the Docker registry
-                docker push theoafactor/clusterbik:first_test1 
+                docker push theoafactor/clusterbik:first_test2 
 
             - name: "Setup Kubectl"
               uses: azure/setup-kubectl@v2.0
@@ -51,7 +51,7 @@ jobs:
 
             - name: "Install the helm charts"
               run: |
-                helm install bik bik
+                helm upgrade --install bik bik
               
 
                 
