@@ -59,7 +59,7 @@ jobs:
 
           - name: "Use helm to install our charts"
             run: |
-              helm upgrade --install bik bik -f bik/values.yaml --set image.tag=${{ env.APP_VERSION}} --set replicaCount=3
+              helm upgrade --install bik bik -f bik/values.yaml --set image.tag=${{ env.APP_VERSION}} --set replicaCount=3 --set canaryReplicaCount=0
 
           
 
@@ -129,7 +129,7 @@ jobs:
 
         - name: "Use helm to install our charts"
           run: |
-            helm upgrade --install bik bik -f bik/values.yaml --set image.tag=${{ env.APP_VERSION}} --set canaryReplicaCount=1 --set replicaCount=3 
+            helm upgrade --install bik bik -f bik/values.yaml --set canaryImage.tag=${{ env.APP_VERSION}} --set canaryReplicaCount=1 --set replicaCount=3 
 
         
 
