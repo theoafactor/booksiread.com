@@ -46,6 +46,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key:  ${{ secrets.AWS_SECRET_KEY }}
 
+      - name: "Connect to the cluster"
+        run: |
+          aws eks update-kubeconfig --name testcluster
+
 
       # - name: "Announce the latest version of the deployment"
       #   uses: dawidd6/action-send-mail@v3
