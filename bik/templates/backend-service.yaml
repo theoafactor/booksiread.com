@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: backend
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: backend
   ports:
   - port: 4343
     targetPort: 4343
+    nodePort: 30000

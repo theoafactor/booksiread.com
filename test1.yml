@@ -17,10 +17,16 @@ spec:
         ports:
         - containerPort: 4343
 
-        volumeMounts:
-          - name: anothervol
-            mountPath: /home/backend/config
-
+      # initContainers:
+      # - name: copier
+      #   image: ubuntu
+      #   command: 
+      #   - /bin/sh
+      #   - -c
+      #   - mkdir /var/tester/sample
+      #   volumeMounts:
+      #     - mountPath: /var/tester
+      #       name: testervolume
         env: 
         - name: DB_NAME
           value: books_i_read
@@ -36,9 +42,9 @@ spec:
           value: mongodb://root:password@mongo:27017
 
       volumes:
-      - name: anothervol
-        configMap: 
-          name: backend-config
+      - name: testervolume
+        hostPath: 
+          path: /var/tester
         
 
 
