@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: frontendcanary
 spec:
   replicas: {{ .Values.canaryReplicaCount }}
   selector:
@@ -13,7 +13,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - name: frontend
-        image: 'theoafactor/simplewebapp:{{ .Values.image.tag }}'
+      - name: frontendcanary
+        image: 'theoafactor/simplewebapp:{{ .Values.canaryImage.tag }}'
         ports:
         - containerPort: 3000
