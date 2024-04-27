@@ -54,7 +54,7 @@ jobs:
                 
                 ## set up the helm chart and pass some configration variables
 
-                helm upgrade --install bik bik -f values.yaml --set image.tag=3
+                helm upgrade --install bik bik -f bik/values.yaml --set image.tag=3
               
 
                 
