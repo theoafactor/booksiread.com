@@ -17,17 +17,11 @@ jobs:
 
       - name: "Create version number"
         run: |
-          #echo "APP_VERSION=${RANDOM}" >> $GITHUB_ENV
-
-          #echo ${{ env.APP_VERSION }}
+          echo "APP_VERSION=${RANDOM}" >> $GITHUB_ENV
       
-      # - name: "Build a Docker image from the repo v1"
-      #   run:  | 
-      #     docker build -t theoafactor/simplewebapp:v1 frontend/
-
-      - name: "Build a Docker image from the repo version2"
+      - name: "Build a Docker image from the repo v1"
         run:  | 
-            docker build -t theoafactor/simplewebapp:v2 frontend/
+          docker build -t theoafactor/simplewebapp:${{ env.APP_VERSION }} frontend/
 
       - name: "Log into Docker Hub"
         uses: docker/login-action@v3
@@ -37,7 +31,20 @@ jobs:
 
       - name: "Push to Docker Hub"
         run: |
-          docker push theoafactor/simplewebapp:v2
+          docker push theoafactor/simplewebapp:${{ env.APP_VERSION }}
+
+      - name: "Install kubectl"
+        uses: azure/setup-kubectl@v3
+        with: 
+          version: "v1.19.3"
+        id: "install-kubectl"
+
+      - name: "Setup AWS Credentials"
+        uses: aws-actions/configure-aws-credentials@v4
+        with: 
+          aws-region: "eu-west-2"
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key:  ${{ secrets.AWS_SECRET_KEY }}
 
 
       # - name: "Announce the latest version of the deployment"
