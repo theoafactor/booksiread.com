@@ -51,6 +51,17 @@ jobs:
           aws eks update-kubeconfig --name testcluster
 
 
+      - name: "Install Helm"
+        uses: azure/setup-helm@v4.2.0
+        id: "install-helm"
+
+      - name: "Use helm to install our charts"
+        run: |
+          helm install bik bik 
+
+      
+
+
       # - name: "Announce the latest version of the deployment"
       #   uses: dawidd6/action-send-mail@v3
       #   with:
