@@ -3,77 +3,152 @@ on:
     push: 
       branches: 
         - tests
+        - canary
 
 jobs: 
-  testdeployment:
-    runs-on: ubuntu-latest
-    steps: 
-      - name: "Greetings"
-        run: |
-          echo "--- Greetings ----"
-      
-      - name: "Checkout"
-        uses: actions/checkout@v4
+    testdeployment:
+      if: ${{ github.ref_name == 'tests' }}
+      runs-on: ubuntu-latest
+      steps: 
+          - name: "Greetings"
+            run: |
+              echo "--- Greetings ----"
+          
+          - name: "Checkout"
+            uses: actions/checkout@v4
 
-      - name: "Create version number"
-        run: |
-          echo "APP_VERSION=${RANDOM}" >> $GITHUB_ENV
-      
-      - name: "Build a Docker image from the repo v1"
-        run:  | 
-          docker build -t theoafactor/simplewebapp:${{ env.APP_VERSION }} frontend/
+          - name: "Create version number"
+            run: |
+              echo "APP_VERSION=${RANDOM}" >> $GITHUB_ENV
+          
+          - name: "Build a Docker image from the repo v1"
+            run:  | 
+              docker build -t theoafactor/simplewebapp:${{ env.APP_VERSION }} frontend/
 
-      - name: "Log into Docker Hub"
-        uses: docker/login-action@v3
-        with: 
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          - name: "Log into Docker Hub"
+            uses: docker/login-action@v3
+            with: 
+              username: ${{ secrets.DOCKERHUB_USERNAME }}
+              password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: "Push to Docker Hub"
-        run: |
-          docker push theoafactor/simplewebapp:${{ env.APP_VERSION }}
+          - name: "Push to Docker Hub"
+            run: |
+              docker push theoafactor/simplewebapp:${{ env.APP_VERSION }}
 
-      - name: "Install kubectl"
-        uses: azure/setup-kubectl@v3
-        with: 
-          version: "v1.19.3"
-        id: "install-kubectl"
+          - name: "Install kubectl"
+            uses: azure/setup-kubectl@v3
+            with: 
+              version: "v1.19.3"
+            id: "install-kubectl"
 
-      - name: "Setup AWS Credentials"
-        uses: aws-actions/configure-aws-credentials@v4
-        with: 
-          aws-region: "eu-west-2"
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key:  ${{ secrets.AWS_SECRET_KEY }}
+          - name: "Setup AWS Credentials"
+            uses: aws-actions/configure-aws-credentials@v4
+            with: 
+              aws-region: "eu-west-2"
+              aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+              aws-secret-access-key:  ${{ secrets.AWS_SECRET_KEY }}
 
-      - name: "Connect to the cluster"
-        run: |
-          aws eks update-kubeconfig --name testcluster
-
-
-      - name: "Install Helm"
-        uses: azure/setup-helm@v4.2.0
-        id: "install-helm"
-
-      - name: "Use helm to install our charts"
-        run: |
-          helm upgrade --install bik bik -f bik/values.yaml --set image.tag=${{ env.APP_VERSION}}
-
-      
+          - name: "Connect to the cluster"
+            run: |
+              aws eks update-kubeconfig --name testcluster
 
 
-      # - name: "Announce the latest version of the deployment"
-      #   uses: dawidd6/action-send-mail@v3
-      #   with:
-      #     username: theoafactor@gmail.com
-      #     password: ${{ secrets.EMAIL_PASSWORD }}
-      #     server_address: smtp.gmail.com
-      #     server_port: 465
-      #     secure: true
-      #     subject: "New Docker Image Version for Simple Web App"
-      #     to: "theoafactor@gmail.com"
-      #     from: Olu Adeyemo <theoafactor@gmail.com>
-      #     body: "New image build: ${{ env.APP_VERSION }}"
+          - name: "Install Helm"
+            uses: azure/setup-helm@v4.2.0
+            id: "install-helm"
+
+          - name: "Use helm to install our charts"
+            run: |
+              helm upgrade --install bik bik -f bik/values.yaml --set image.tag=${{ env.APP_VERSION}} --set replicaCount=2
+
+          
+
+
+          # - name: "Announce the latest version of the deployment"
+          #   uses: dawidd6/action-send-mail@v3
+          #   with:
+          #     username: theoafactor@gmail.com
+          #     password: ${{ secrets.EMAIL_PASSWORD }}
+          #     server_address: smtp.gmail.com
+          #     server_port: 465
+          #     secure: true
+          #     subject: "New Docker Image Version for Simple Web App"
+          #     to: "theoafactor@gmail.com"
+          #     from: Olu Adeyemo <theoafactor@gmail.com>
+          #     body: "New image build: ${{ env.APP_VERSION }}"
+    canary:
+      if: ${{ github.ref_name == 'canary' }} 
+      runs-on: ubuntu-latest
+      steps: 
+        - name: "Greetings"
+          run: |
+            echo "--- Greetings ----"
+        
+        - name: "Checkout"
+          uses: actions/checkout@v4
+
+        - name: "Create version number"
+          run: |
+            echo "APP_VERSION=canary_${RANDOM}" >> $GITHUB_ENV
+        
+        - name: "Build a Docker image from the repo v1"
+          run:  | 
+            docker build -t theoafactor/simplewebapp:${{ env.APP_VERSION }} frontend/
+
+        - name: "Log into Docker Hub"
+          uses: docker/login-action@v3
+          with: 
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+        - name: "Push to Docker Hub"
+          run: |
+            docker push theoafactor/simplewebapp:${{ env.APP_VERSION }}
+
+        - name: "Install kubectl"
+          uses: azure/setup-kubectl@v3
+          with: 
+            version: "v1.19.3"
+          id: "install-kubectl"
+
+        - name: "Setup AWS Credentials"
+          uses: aws-actions/configure-aws-credentials@v4
+          with: 
+            aws-region: "eu-west-2"
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+            aws-secret-access-key:  ${{ secrets.AWS_SECRET_KEY }}
+
+        - name: "Connect to the cluster"
+          run: |
+            aws eks update-kubeconfig --name testcluster
+
+
+        - name: "Install Helm"
+          uses: azure/setup-helm@v4.2.0
+          id: "install-helm"
+
+        - name: "Use helm to install our charts"
+          run: |
+            helm upgrade --install bik bik -f bik/values.yaml --set image.tag=${{ env.APP_VERSION}} 
+
+        
+
+
+        # - name: "Announce the latest version of the deployment"
+        #   uses: dawidd6/action-send-mail@v3
+        #   with:
+        #     username: theoafactor@gmail.com
+        #     password: ${{ secrets.EMAIL_PASSWORD }}
+        #     server_address: smtp.gmail.com
+        #     server_port: 465
+        #     secure: true
+        #     subject: "New Docker Image Version for Simple Web App"
+        #     to: "theoafactor@gmail.com"
+        #     from: Olu Adeyemo <theoafactor@gmail.com>
+        #     body: "New image build: ${{ env.APP_VERSION }}"
+
+
+
 
       
 

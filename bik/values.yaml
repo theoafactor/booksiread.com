@@ -4,6 +4,8 @@
 
 replicaCount: 1
 
+canaryReplicaCount: 0
+
 image:
   repository: nginx
   pullPolicy: IfNotPresent
