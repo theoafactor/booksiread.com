@@ -57,7 +57,7 @@ jobs:
 
       - name: "Use helm to install our charts"
         run: |
-          helm install bik bik 
+          helm upgrade --install bik bik -f bik/values.yaml --set image.tag=${{ env.APP_VERSION}}
 
       
 
