@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 'theoafactor/simplewebapp:canary28604'
+        image: 'theoafactor/simplewebapp:18838'
         ports:
         - containerPort: 3000
