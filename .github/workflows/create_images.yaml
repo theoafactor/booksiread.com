@@ -1,0 +1,37 @@
+name: "Create Images"
+on: 
+    push:
+        branches:
+            - cluster
+jobs:
+    create_images_job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Checkouts the repository"
+              uses: actions/checkout@v4
+
+            - name: "Build the Docker image"
+              run: |
+                
+                # build the image for the frontend
+                docker build -t theoafactor/clusterbik:first_test froontend/
+
+            - name: "Logs into the Docker registry"
+              uses: docker/login-action@v3
+              with: 
+                username: ${{ secrets.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+
+            - name: "Pushes the image to the Docker registry"
+              run: |
+                #  Pushes this code to the Docker registry
+                docker push theoafactor/clusterbik:first_test 
+                
+            - name: "All set, might be time to pull the image into a cluster"
+              run: |
+                echo "Pulls the image into a cluster"
+
+            
+
+                
