@@ -89,7 +89,7 @@ jobs:
 
         - name: "Create version number"
           run: |
-            echo "APP_VERSION=canary_${RANDOM}" >> $GITHUB_ENV
+            echo "APP_VERSION=canary${RANDOM}" >> $GITHUB_ENV
         
         - name: "Build a Docker image from the repo v1"
           run:  | 
@@ -129,7 +129,7 @@ jobs:
 
         - name: "Use helm to install our charts"
           run: |
-            helm upgrade --install bik bik -f bik/values.yaml --set canaryImage.tag=${{ env.APP_VERSION}} --set canaryReplicaCount=1 --set replicaCount=3 
+            helm upgrade --install bik bik -f bik/values.yaml --set canaryImage.tag=${{ env.APP_VERSION }} --set canaryReplicaCount=1 --set replicaCount=3 
 
         
 
