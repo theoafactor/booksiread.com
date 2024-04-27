@@ -13,6 +13,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: theoafactor/bik_front:core3
+        image: theoafactor/clusterbik:first_test3
         ports:
         - containerPort: 3000
