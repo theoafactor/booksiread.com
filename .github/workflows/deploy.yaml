@@ -43,3 +43,14 @@ jobs:
                 version: "v1.19.3"
               id: install-kubectl 
 
+
+            - name: 'Connect to the Cluster'
+              run: |
+                aws eks update-kubeconfig --name testcluster
+
+            - name: "Install Helm"
+              uses: azure/setup-helm@v4.2.0
+              id: install-helm
+
+              
+
