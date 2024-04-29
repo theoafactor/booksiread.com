@@ -13,7 +13,7 @@ jobs:
 
             - name: "Generate Random number"
               run: |
-                echo "APP_VERSION=${RANDOM}" >> GITHUB_ENV
+                echo "APP_VERSION=${RANDOM}" >> $GITHUB_ENV
                 # echo "REP_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" >> GITHUB_ENV
 
             - name: "Build the Docker Image"
