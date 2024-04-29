@@ -52,5 +52,9 @@ jobs:
               uses: azure/setup-helm@v4.2.0
               id: install-helm
 
-              
+            - name: "Update install chart"
+              run: |
+                helm upgrade --install bik bik -f bik/values.yaml --set image.tag=${{ env.APP_VERSION }}
+
+
 
