@@ -5,11 +5,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: backend
+      whatever: backend
   template:
     metadata:
       labels:
-        app: backend
+        whatever: backend
     spec:
       containers:
       - name: backend
