@@ -1,1 +1,32 @@
+version: "3"
+services: 
+  frontend: 
+    build: 
+      context: ./frontend
+    container_name: frontend_bir
+    ports: 
+    - "1234:3000"
+    networks:
+    - bir_network
 
+  backend: 
+    build: 
+      context: ./backend
+    container_name: backend_bir
+    ports: 
+    - "2323:4343"
+    depends_on: 
+    - mongo
+    networks: 
+    - bir_network
+
+  mongo: 
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+networks:
+  bir_network:
+    driver: bridge
